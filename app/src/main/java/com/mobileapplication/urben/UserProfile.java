@@ -2,17 +2,15 @@ package com.mobileapplication.urben;
 
 public class UserProfile {
 
-    private String firstName;
-    private String lastName;
+    private String userName;
     private String email;
     private int age;
     private String gender;
     private String password;
     private  String userType;
 
-    public UserProfile(String firstName, String lastName, String email, int age, String gender, String password, String userType) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public UserProfile(String userName, String email, int age, String gender, String password, String userType) {
+        this.userName = userName;
         this.email = email;
         this.age = age;
         this.gender = gender;
@@ -21,8 +19,7 @@ public class UserProfile {
     }
 
     public UserProfile() {
-        this.firstName = "";
-        this.lastName = "";
+        this.userName = "";
         this.email = "";
         this.age = 0;
         this.gender = "";
@@ -31,12 +28,9 @@ public class UserProfile {
     }
 
     public void setFirstName(String name){
-        firstName = name;
+        userName = name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public void setAge(int age) {
         this.age = age;
@@ -59,12 +53,9 @@ public class UserProfile {
     }
 
     public String getFirstName() {
-        return firstName;
+        return userName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
 
     public int getAge() {
         return age;
@@ -89,8 +80,7 @@ public class UserProfile {
     @Override
     public String toString() {
         return "UserProfile{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                "firstName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
                 ", gender='" + gender + '\'' +

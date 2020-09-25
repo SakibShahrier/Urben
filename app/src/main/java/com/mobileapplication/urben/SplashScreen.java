@@ -13,8 +13,8 @@ import java.io.Serializable;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private String firstName, lastName, password, email, gender, userType;
-    private int age;
+    private String userName, password, email, gender, userType;
+    private int age = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,26 +46,25 @@ public class SplashScreen extends AppCompatActivity {
         // Checking whether any user data available or not
 
         SharedPreferences sharedPreferences = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-        firstName = sharedPreferences.getString("firstName", "");
-        lastName = sharedPreferences.getString("lastName", "");
+        userName = sharedPreferences.getString("userName", "");
         password = sharedPreferences.getString("password", "");
         email = sharedPreferences.getString("email", "");
         age = sharedPreferences.getInt("age", 0);
         gender = sharedPreferences.getString("gender", "");
         userType = sharedPreferences.getString("userType", "");
 
-        if(firstName.equals("") || lastName.equals("") ||password.equals("") || email.equals("") || (age == 0) || userType.equals("") || gender.equals("")){
+        if(!(new RequiredDataChecker().sharedDataAvailable(userName, email, age, gender, password, userType))){
             // Sign up / Login required
 
-            Intent intent = new Intent(SplashScreen.this, ProfileActivity.class);
+            Intent intent = new Intent(SplashScreen.this, UserType.class);
             startActivity(intent);
             finish();
 
         }else{
             // Profile View
 
-            UserProfile userProfile = new UserProfile(firstName, lastName, email, age, gender, password, userType);
-            Intent intent = new Intent(SplashScreen.this, SignUpActivity.class);
+            UserProfile userProfile = new UserProfile(userName, email, age, gender, password, userType);
+            Intent intent = new Intent(SplashScreen.this, ProfileActivity.class);
             intent.putExtra("userDetails", (Serializable) userProfile);
             startActivity(intent);
         }

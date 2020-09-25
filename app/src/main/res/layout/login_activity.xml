@@ -1,9 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     tools:context=".LoginActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/email"
+            android:paddingLeft="10dp"
+            android:background="@drawable/green_border"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"/>
+        <EditText
+            android:id="@+id/passWord"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="@drawable/green_border"
+            android:hint="Password"
+            android:inputType="textPassword"/>
+        <Button
+            android:layout_marginTop="15dp"
+            android:id="@+id/login"
+            android:padding="20dp"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:text="Login"
+            android:background="@drawable/green_background"
+            android:textColor="#FFFF"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
