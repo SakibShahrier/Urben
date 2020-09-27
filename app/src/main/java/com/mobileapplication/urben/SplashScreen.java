@@ -56,7 +56,7 @@ public class SplashScreen extends AppCompatActivity {
         if(!(new RequiredDataChecker().sharedDataAvailable(userName, email, age, gender, password, userType))){
             // Sign up / Login required
 
-            Intent intent = new Intent(SplashScreen.this, UserType.class);
+            Intent intent = new Intent(SplashScreen.this, MapsActivity.class);
             startActivity(intent);
             finish();
 

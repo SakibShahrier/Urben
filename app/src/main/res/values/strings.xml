@@ -7,4 +7,67 @@
         <item> Female </item>
 
     </string-array>
+
+    <string-array name="location_names">
+
+        <item>Abdullahpur</item>
+        <item>Azampur</item>
+        <item>Jashimuddin</item>
+        <item>Airport</item>
+        <item>Khilkhet</item>
+        <item>Bashundhara Gate</item>
+        <item>Natun Bazar</item>
+        <item>Rampura</item>
+        <item>Malibagh</item>
+        <item>Motijheel</item>
+
+    </string-array>
+
+    <string-array name="cordinates">
+
+        <item>23.880524,90.401101</item>
+        <item>23.868593,90.400488</item>
+        <item>23.860578,90.400471</item>
+        <item>23.849747,90.409258</item>
+        <item>23.828220,90.420245</item>
+        <item>23.811253,90.421388</item>
+        <item>23.798075,90.423582</item>
+        <item>23.764822,90.421509</item>
+        <item>23.745124,90.413222</item>
+        <item>23.726826,90.421718</item>
+
+    </string-array>
+
+    <string-array name="route_one">
+
+        <item>Abdullahpur</item>
+        <item>Azampur</item>
+        <item>Jashimuddin</item>
+        <item>Airport</item>
+        <item>Khilkhet</item>
+        <item>Bashundhara Gate</item>
+        <item>Natun Bazar</item>
+        <item>Rampura</item>
+        <item>Malibagh</item>
+        <item>Motijheel</item>
+
+    </string-array>
+
+    <string-array name="route_two">
+
+        <item>Motijheel</item>
+        <item>Malibagh</item>
+        <item>Rampura</item>
+        <item>Natun Bazar</item>
+        <item>Bashundhara Gate</item>
+        <item>Khilkhet</item>
+        <item>Airport</item>
+        <item>Jashimuddin</item>
+        <item>Azampur</item>
+        <item>Abdullahpur</item>
+
+    </string-array>
+    <string name="title_activity_maps">Map</string>
+
+
 </resources>
