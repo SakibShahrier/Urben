@@ -6,16 +6,12 @@ public class UserProfile {
     private String email;
     private int age;
     private String gender;
-    private String password;
-    private  String userType;
 
-    public UserProfile(String userName, String email, int age, String gender, String password, String userType) {
+    public UserProfile(String userName, String email, int age, String gender) {
         this.userName = userName;
         this.email = email;
         this.age = age;
         this.gender = gender;
-        this.password = password;
-        this.userType = userType;
     }
 
     public UserProfile() {
@@ -23,11 +19,9 @@ public class UserProfile {
         this.email = "";
         this.age = 0;
         this.gender = "";
-        this.password = "";
-        this.userType = "";
     }
 
-    public void setFirstName(String name){
+    public void setName(String name){
         userName = name;
     }
 
@@ -40,19 +34,13 @@ public class UserProfile {
         this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public void setGender(String gender) {
         this.gender = gender;
     }
 
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
 
-    public String getFirstName() {
+    public String getName() {
         return userName;
     }
 
@@ -65,27 +53,17 @@ public class UserProfile {
         return email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public String getGender() {
         return gender;
-    }
-
-    public String getUserType() {
-        return userType;
     }
 
     @Override
     public String toString() {
         return "UserProfile{" +
-                "firstName='" + userName + '\'' +
+                "name='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
                 ", gender='" + gender + '\'' +
-                ", password='" + password + '\'' +
-                ", userType='" + userType + '\'' +
                 '}';
     }
 }

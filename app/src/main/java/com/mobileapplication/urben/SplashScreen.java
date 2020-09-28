@@ -56,14 +56,14 @@ public class SplashScreen extends AppCompatActivity {
         if(!(new RequiredDataChecker().sharedDataAvailable(userName, email, age, gender, password, userType))){
             // Sign up / Login required
 
-            Intent intent = new Intent(SplashScreen.this, MapsActivity.class);
+            Intent intent = new Intent(SplashScreen.this, UserType.class);
             startActivity(intent);
             finish();
 
         }else{
             // Profile View
 
-            UserProfile userProfile = new UserProfile(userName, email, age, gender, password, userType);
+            UserProfile userProfile = new UserProfile(userName, email, age, gender);
             Intent intent = new Intent(SplashScreen.this, ProfileActivity.class);
             intent.putExtra("userDetails", (Serializable) userProfile);
             startActivity(intent);

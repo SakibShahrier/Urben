@@ -33,6 +33,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -49,23 +54,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     FusedLocationProviderClient fusedLocationProviderClient;
     private float defaultZoom = 12f;
     private AutoCompleteTextView editText;
-    private String[] places;
     private ArrayList<LatLng> arrayList = new ArrayList<LatLng>();
     private LocationCallback mLocationCallback;
-    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
-    private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private boolean locationGranted = false;
     private static final int locationPermissionRequestCode = 1234;
+    private ArrayList<String> places = new ArrayList<>();
+    private ArrayList<String> coordinates = new ArrayList<>();
 
     private  void getLocationPermission(){
         Log.d(TAG, "getLocationPermission() Called");
 
-        String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-
         if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                 locationGranted = true;
-                // initializeMap();
             }else{
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, locationPermissionRequestCode);
             }
@@ -85,7 +86,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 mMap.setMyLocationEnabled(true);
                 locationGranted = true;
-                // initializeMap();
             }
             else {
                 Toast.makeText(this, "User has not granted location access permission", Toast.LENGTH_LONG).show();
@@ -101,12 +101,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         initializeMap();
 
-        places = getResources().getStringArray(R.array.location_names);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, places);
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("locations");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                places.clear();
+                coordinates.clear();
+                int i = 0;
+                for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                    places.add(dataSnapshot.getValue(LocationProfile.class).getPlaces());
+                    coordinates.add(dataSnapshot.getValue(LocationProfile.class).getCoordinates());
+                    i++;
+                }
+                adapter.notifyDataSetChanged();
+                editText.setAdapter(adapter);
+                latLongSplitter();
+                placeTicketer();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         editText = (AutoCompleteTextView) findViewById(R.id.searchBox);
         imgBtn = (ImageButton)findViewById(R.id.searchBtn);
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, places);
-        editText.setAdapter(arrayAdapter);
 
         getLocationPermission();
 
@@ -138,8 +160,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         buildGoogleApiClient();
         Toast.makeText(getApplicationContext(), "Map Ready ;)", Toast.LENGTH_SHORT).show();
-        latLongSplitter();
-        placeTicketer();
 
         if(locationGranted){
             mapSetting();
@@ -196,7 +216,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void latLongSplitter() {
-        String[] coordinates = getResources().getStringArray(R.array.cordinates);
         String[] temp;
         double y, z;
 
@@ -212,12 +231,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void placeTicketer() {
         int i = 0;
         for (LatLng l : arrayList) {
-            mMap.addMarker(new MarkerOptions().position(l).title(places[i]));
+            mMap.addMarker(new MarkerOptions().position(l).title(places.get(i)));
             i++;
         }
 
-       /* mMap.moveCamera(CameraUpdateFactory.newLatLng(arrayList.get(2)));
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(defaultZoom));*/
+        // mMap.moveCamera(CameraUpdateFactory.newLatLng(arrayList.get(2)));
+        // mMap.moveCamera(CameraUpdateFactory.zoomTo(defaultZoom));
+        // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(arrayList.get(9), 13));
     }
 
     protected synchronized void buildGoogleApiClient() {

@@ -1,8 +1,12 @@
 package com.mobileapplication.urben;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -10,7 +14,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -22,12 +30,14 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText nameField, emailField, passwordField, ageField;
     Spinner spinnerGender;
     private String[] genderList;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up_activity);
 
+        mAuth = FirebaseAuth.getInstance();
         userType = (String) getIntent().getStringExtra("userType");
 
         nameField = (EditText) findViewById(R.id.nameField);
@@ -39,47 +49,96 @@ public class SignUpActivity extends AppCompatActivity {
 
         genderList = getResources().getStringArray(R.array.gender_list);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_extra, R.id.spinner_textID, genderList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter
+                <String>(this, R.layout.spinner_extra, R.id.spinner_textID, genderList);
         spinnerGender.setAdapter(arrayAdapter);
-
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                makeUserDataReady(); // Fetching EditText Data
-                if(checkingDataAvailability()){   // Checking if all required data given
-                    // firbase Auth code here
-                }
-
-
+                registration();
             }
         });
 
-
     }
 
-    private void makeUserDataReady(){
-
+    private void registration() {
         userName = nameField.getText().toString().trim();
-        password = passwordField.getText().toString().trim();
         email = emailField.getText().toString().trim();
-        age = Integer.parseInt(ageField.getText().toString().trim());
+        password = passwordField.getText().toString().trim();
         gender = spinnerGender.getSelectedItem().toString();
 
-    }
+        if(TextUtils.isEmpty(userName)){
+            nameField.requestFocus();
+            Toast.makeText(com.mobileapplication.urben.SignUpActivity.this, "Fill in the space...", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-    private boolean checkingDataAvailability(){
-        if(new RequiredDataChecker().providedSignUpDataProperly(userName, email, age, gender, password)){
-            UserProfile userProfile = new UserProfile(userName, email, age, gender, password, userType);
-            return true;
-        }else{
-            Toast.makeText(SignUpActivity.this, "Please Give All the Information", Toast.LENGTH_SHORT).show();
-            return false;
+        if(TextUtils.isEmpty(email)){
+            emailField.requestFocus();
+            Toast.makeText(com.mobileapplication.urben.SignUpActivity.this, "Fill in the space..", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            emailField.requestFocus();
+            Toast.makeText(com.mobileapplication.urben.SignUpActivity.this, "Valid Email only...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(TextUtils.isEmpty(password)){
+            passwordField.requestFocus();
+            Toast.makeText(com.mobileapplication.urben.SignUpActivity.this, "Fill in the space...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(ageField.getText().toString().isEmpty()){
+            ageField.requestFocus();
+            Toast.makeText(com.mobileapplication.urben.SignUpActivity.this, "Enter age...", Toast.LENGTH_SHORT).show();
+            age = 0;
+            return;
+        }
+        else{
+            age = Integer.parseInt(ageField.getText().toString());
+        }
+
+        if(password.length() < 6){
+            passwordField.requestFocus();
+            Toast.makeText(com.mobileapplication.urben.SignUpActivity.this, "Length should be greater than 5...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        else{
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        UserProfile userProfile = new UserProfile(userName, email, age, gender);
+                        FirebaseDatabase.getInstance().getReference(userType)
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .setValue(userProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()) {
+                                    Toast.makeText(getApplicationContext(), "Registration Successful...", Toast.LENGTH_LONG).show();
+                                }
+                                else {
+                                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(com.mobileapplication.urben.SignUpActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    else{
+                        Toast.makeText(com.mobileapplication.urben.SignUpActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }
     }
-
-
-
-
 }

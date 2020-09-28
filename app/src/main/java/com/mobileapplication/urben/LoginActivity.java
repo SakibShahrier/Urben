@@ -1,26 +1,42 @@
 package com.mobileapplication.urben;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText emailField, passField;
     private Button btn;
     private String userType, email, password;
+    private FirebaseAuth mAuth;
+    private int warnFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
+        mAuth = FirebaseAuth.getInstance();
         userType = (String) getIntent().getStringExtra("userType");
+        warnFlag = 1;
 
         emailField = (EditText)findViewById(R.id.email);
         passField = (EditText)findViewById(R.id.passWord);
@@ -29,31 +45,76 @@ public class LoginActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                gatheringLoginData();
-
-                if(checkingDataAvailability()){
-                    // Firebase Login Auth code here ;)
-                }
-
+                loginDriver();
             }
         });
-
     }
 
-    private void gatheringLoginData(){
+    private void loginDriver() {
         email = emailField.getText().toString().trim();
         password = passField.getText().toString().trim();
-    }
 
+        if(TextUtils.isEmpty(email)){
+            emailField.requestFocus();
+            Toast.makeText(com.mobileapplication.urben.LoginActivity.this, "Fill in the space...", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-    private boolean checkingDataAvailability(){
-        if(new RequiredDataChecker().providedLoginDataProperly(email, password)){
-            return true;
-        }else{
-            Toast.makeText(LoginActivity.this, "Email or Password Required", Toast.LENGTH_SHORT).show();
-            return false;
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            emailField.requestFocus();
+            Toast.makeText(com.mobileapplication.urben.LoginActivity.this, "Valid Email only...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(TextUtils.isEmpty(password)){
+            passField.requestFocus();
+            Toast.makeText(com.mobileapplication.urben.LoginActivity.this, "Fill in the space...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(password.length() < 6){
+            passField.requestFocus();
+            Toast.makeText(com.mobileapplication.urben.LoginActivity.this, "Length should be greater than 5...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        else {
+            FirebaseDatabase.getInstance().getReference(userType)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                                UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+                                if(userProfile.getEmail().matches(email)) {
+                                    warnFlag = 0;
+                                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if(task.isSuccessful()){
+                                                Toast.makeText(com.mobileapplication.urben.LoginActivity.this, "Logged in Successfully...", Toast.LENGTH_SHORT).show();
+
+                                                Intent intent = new Intent(com.mobileapplication.urben.LoginActivity.this, MapsActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+
+                                            else{
+                                                Toast.makeText(com.mobileapplication.urben.LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                            if(warnFlag == 1) {
+                                Toast.makeText(com.mobileapplication.urben.LoginActivity.this, "Email ID not found...", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
         }
     }
-
 }

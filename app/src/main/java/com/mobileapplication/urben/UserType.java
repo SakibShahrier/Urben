@@ -7,9 +7,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class UserType extends AppCompatActivity implements View.OnClickListener {
 
     private CardView passenger, driver, agent;
+    private FirebaseAuth mAuth;
+
+    protected void onStart() {
+        super.onStart();
+        if(mAuth.getCurrentUser() != null) {
+            // mAuth.signOut();
+            startActivity(new Intent(UserType.this, MapsActivity.class));
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +35,8 @@ public class UserType extends AppCompatActivity implements View.OnClickListener 
         passenger.setOnClickListener(this);
         agent.setOnClickListener(this);
         driver.setOnClickListener(this);
+
+        mAuth = FirebaseAuth.getInstance();
 
     }
 

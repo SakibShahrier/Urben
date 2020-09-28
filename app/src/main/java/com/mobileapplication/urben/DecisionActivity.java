@@ -30,7 +30,7 @@ public class DecisionActivity extends AppCompatActivity implements View.OnClickL
 
     private void decisionTaken(int decision){
 
-        // After Pressing Login Button (or View) decision Varibale value will be 1 and 2 for Sign Up button
+        // After Pressing Login Button (or View) decision Variable value will be 1 and 2 for Sign Up button
 
         if(decision == 1){
 
