@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "374821827295",
+    "firebase_url": "https://urbenfinal20.firebaseio.com",
+    "project_id": "urbenfinal20",
+    "storage_bucket": "urbenfinal20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374821827295:android:61c7881a043dd077412f6a",
+        "android_client_info": {
+          "package_name": "com.mobileapplication.urben"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "374821827295-bb6hiois8fnhnathjtut8vgt50valgom.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobileapplication.urben",
+            "certificate_hash": "5ad3efeb47783668e9576a15dfadb53351dd9cec"
+          }
+        },
+        {
+          "client_id": "374821827295-vq5ivcofeq86ni5mcg1j9kg25i15op8p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkTh65Qhe9B0TAkFTJsu75o0nh6-u_244"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "374821827295-vq5ivcofeq86ni5mcg1j9kg25i15op8p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
