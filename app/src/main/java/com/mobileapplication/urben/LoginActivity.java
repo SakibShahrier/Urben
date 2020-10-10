@@ -3,9 +3,12 @@ package com.mobileapplication.urben;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -84,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                                UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+                                final UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
                                 if(userProfile.getEmail().matches(email)) {
                                     warnFlag = 0;
                                     mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -92,10 +95,30 @@ public class LoginActivity extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             if(task.isSuccessful()){
                                                 Toast.makeText(com.mobileapplication.urben.LoginActivity.this, "Logged in Successfully...", Toast.LENGTH_SHORT).show();
-
-                                                Intent intent = new Intent(com.mobileapplication.urben.LoginActivity.this, MapsActivity.class);
-                                                startActivity(intent);
-                                                finish();
+                                                SharedPreferences sharedPreferences = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+                                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                editor.putString("userName", userProfile.getName());
+                                                editor.putString("email", userProfile.getEmail());
+                                                editor.putString("userType", userType);
+                                                editor.commit();
+                                                if(userType.matches("passenger")) {
+                                                    Intent intent = new Intent(com.mobileapplication.urben.LoginActivity.this, MapsActivity.class);
+                                                    intent.putExtra("userType", userType);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
+                                                else if(userType.matches("driver")) {
+                                                    Intent intent = new Intent(com.mobileapplication.urben.LoginActivity.this, ContractorFirstPage.class);
+                                                    intent.putExtra("userType", userType);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
+                                                else {
+                                                    Intent intent = new Intent(com.mobileapplication.urben.LoginActivity.this, AgentHomePage.class);
+                                                    intent.putExtra("userType", userType);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
                                             }
 
                                             else{

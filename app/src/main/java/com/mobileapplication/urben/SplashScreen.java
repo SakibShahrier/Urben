@@ -9,12 +9,11 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
-import java.io.Serializable;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private String userName, password, email, gender, userType;
-    private int age = 0;
+    private String userName, email, userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +28,6 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-
                     Thread.sleep(3000);
                     isLoggedIn();
 
@@ -39,6 +37,7 @@ public class SplashScreen extends AppCompatActivity {
             }
         });
         thread.start();
+
     }
 
     private void isLoggedIn(){
@@ -47,27 +46,38 @@ public class SplashScreen extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         userName = sharedPreferences.getString("userName", "");
-        password = sharedPreferences.getString("password", "");
         email = sharedPreferences.getString("email", "");
-        age = sharedPreferences.getInt("age", 0);
-        gender = sharedPreferences.getString("gender", "");
         userType = sharedPreferences.getString("userType", "");
 
-        if(!(new RequiredDataChecker().sharedDataAvailable(userName, email, age, gender, password, userType))){
+        if(!(new RequiredDataChecker().sharedDataAvailable(userName, email, userType))){
             // Sign up / Login required
 
             Intent intent = new Intent(SplashScreen.this, UserType.class);
             startActivity(intent);
             finish();
 
-        }else{
-            // Profile View
-
-            UserProfile userProfile = new UserProfile(userName, email, age, gender);
-            Intent intent = new Intent(SplashScreen.this, ProfileActivity.class);
-            intent.putExtra("userDetails", (Serializable) userProfile);
-            startActivity(intent);
         }
-
+        else{
+            // Maps Activity
+            if(userType.matches("passenger")) {
+                Intent intent = new Intent(SplashScreen.this, MapsActivity.class);
+                intent.putExtra("userType", userType);
+                startActivity(intent);
+                finish();
+            }
+            else if(userType.matches("driver")) {
+                Intent intent = new Intent(SplashScreen.this, ContractorFirstPage.class);
+                intent.putExtra("userType", userType);
+                startActivity(intent);
+                finish();
+            }
+            else {
+                Intent intent = new Intent(SplashScreen.this, AgentHomePage.class);
+                intent.putExtra("userType", userType);
+                startActivity(intent);
+                finish();
+            }
+        }
     }
+
 }

@@ -67,7 +67,17 @@
         <item>Abdullahpur</item>
 
     </string-array>
+
+    <string-array name="vehicle_type">
+
+        <item>AC</item>
+        <item>NON AC</item>
+
+    </string-array>
+
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_driver_map">Map</string>
+    <string name="title_activity_maps2">Map</string>
 
 
 </resources>

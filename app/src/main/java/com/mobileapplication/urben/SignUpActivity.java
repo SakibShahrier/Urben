@@ -3,7 +3,9 @@ package com.mobileapplication.urben;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -128,10 +130,31 @@ public class SignUpActivity extends AppCompatActivity {
                             }
                         });
 
-                        FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(com.mobileapplication.urben.SignUpActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        // FirebaseAuth.getInstance().signOut();
+                        SharedPreferences sharedPreferences = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("userName", userProfile.getName());
+                        editor.putString("email", userProfile.getEmail());
+                        editor.putString("userType", userType);
+                        editor.commit();
+                        if(userType.matches("passenger")) {
+                            Intent intent = new Intent(com.mobileapplication.urben.SignUpActivity.this, MapsActivity.class);
+                            intent.putExtra("userType", userType);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else if(userType.matches("driver")) {
+                            Intent intent = new Intent(com.mobileapplication.urben.SignUpActivity.this, ContractorFirstPage.class);
+                            intent.putExtra("userType", userType);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else {
+                            Intent intent = new Intent(com.mobileapplication.urben.SignUpActivity.this, AgentHomePage.class);
+                            intent.putExtra("userType", userType);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
 
                     else{

@@ -1,60 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MapsActivity"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
 
-
     <fragment
         xmlns:map="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MapsActivity" />
+        />
 
-    <RelativeLayout
-        android:layout_marginVertical="50dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:elevation="10dp"
-        android:background="@drawable/white_border"
-        android:id="@+id/relOne">
+        android:layout_height="wrap_content"
+        android:weightSum="10">
 
-
-        <AutoCompleteTextView
-            android:paddingTop="12dp"
+        <LinearLayout
+            android:layout_weight="9.5"
+            android:weightSum="5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="160dp"
-            android:hint="Search Destination"
-            android:backgroundTint="#fff"
-            android:completionThreshold="1"
-            android:paddingLeft="30dp"
-            android:completionHint="    Pick a location"
-            android:inputType="text"
-            android:id="@+id/searchBox"/>
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:elevation="10dp"
+            android:background="@drawable/white_border"
+            android:id="@+id/relOne">
 
+
+            <AutoCompleteTextView
+                android:layout_weight="4"
+                android:paddingTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Where to "
+                android:backgroundTint="#fff"
+                android:completionThreshold="1"
+                android:paddingLeft="30dp"
+                android:completionHint="    Pick Up your Destination"
+                android:inputType="text"
+                android:id="@+id/searchBox"/>
+
+
+            <ImageButton
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/searchBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/white_border"
+                android:src="@drawable/ic_magnify" />
+
+
+        </LinearLayout>
 
         <ImageButton
-            android:id="@+id/searchBtn"
-            android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@+id/searchBox"
+            android:id="@+id/prof"
+            android:elevation="10dp"
+            android:layout_marginTop="30dp"
+            android:padding="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_magnify"
+            android:src="@drawable/user_icon_small"
             android:background="@drawable/white_border"
-            android:layout_marginTop="12dp"
-            android:layout_marginRight="5dp"/>
+            android:layout_toRightOf="@id/relOne"/>
+
+    </LinearLayout>
 
 
-    </RelativeLayout>
 
 </RelativeLayout>
 

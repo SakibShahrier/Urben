@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.net.Inet4Address;
+
 public class DecisionActivity extends AppCompatActivity implements View.OnClickListener {
 
     private String userType;
@@ -25,7 +29,6 @@ public class DecisionActivity extends AppCompatActivity implements View.OnClickL
         signUp.setOnClickListener(this);
         login.setOnClickListener(this);
 
-
     }
 
     private void decisionTaken(int decision){
@@ -39,7 +42,8 @@ public class DecisionActivity extends AppCompatActivity implements View.OnClickL
             startActivity(intent);
             finish();
 
-        }else if(decision == 2){
+        }
+        else if(decision == 2){
 
             Intent intent = new Intent(DecisionActivity.this, LoginActivity.class);
             intent.putExtra("userType", userType);

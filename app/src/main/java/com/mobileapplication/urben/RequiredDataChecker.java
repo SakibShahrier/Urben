@@ -4,9 +4,9 @@ import android.widget.Toast;
 
 public class RequiredDataChecker {
 
-    public boolean providedSignUpDataProperly(String userName, String email, int age, String gender, String password){
+    public boolean providedSignUpDataProperly(String userName, String email, String userType){
 
-        if(userName.equals("") || password.equals("") || email.equals("") || (age == 0) || gender.equals("")){
+        if(userName.equals("") || email.equals("") || userType.equals("")){
             return false;
         }
         return true;
@@ -20,9 +20,16 @@ public class RequiredDataChecker {
         return true;
     }
 
-    public boolean sharedDataAvailable(String userName, String email, int age, String gender, String password, String userType){
+    public boolean sharedDataAvailable(String userName, String email, String userType){
 
-        if(userName.equals("") || password.equals("") || email.equals("") || (age == 0) || gender.equals("") || userType.equals("")){
+        if(userName.equals("") || email.equals("") || userType.equals("")){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean agentDataAvailable(String counterName, String lat, String lon){
+        if(counterName.equals("") || lat.equals("") ||  lon.equals("")){
             return false;
         }
         return true;
