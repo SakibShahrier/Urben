@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:weightSum="5"
+    tools:context=".WaitingTicketActivity">
+
+
+
+    <RelativeLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:elevation="20dp"
+            android:id="@+id/mapViewID"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="20dp"
+            android:background="#FFFF"
+            android:src="@drawable/map_icon"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_weight="4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/queuePosition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#00bb4e"
+            android:text="80"
+            android:textSize="250sp"/>
+        <TextView
+            android:id="@+id/ticketType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Standing Ticket"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:textColor="#396bc9"/>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

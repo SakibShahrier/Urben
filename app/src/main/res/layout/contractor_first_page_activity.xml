@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ContractorFirstPage"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:id="@+id/drawerLayout"
+    tools:openDrawer="start">
+
+    <RelativeLayout
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:elevation="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/gearicon"
+            android:background="#FFFF"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"
+            android:id="@+id/settingsDriver"/>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/routeOneBtn"
+        android:layout_marginTop="200dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/sample_card"
+        android:gravity="center"
+        android:paddingLeft="50dp"
+        android:paddingTop="20dp"
+        android:paddingRight="50dp"
+        android:paddingBottom="20dp"
+        android:text="Start From Route One"
+        android:textColor="#FFFF"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/routeTwoBtn"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/sample_card"
+        android:gravity="center"
+        android:paddingLeft="50dp"
+        android:paddingTop="20dp"
+        android:paddingRight="50dp"
+        android:paddingBottom="20dp"
+        android:text="Start From Route Two"
+        android:textColor="#FFFF"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/serviceGrp"
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:textColor="#00bb4e"
+            android:layout_marginLeft="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AC"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:id="@+id/acService"/>
+
+        <RadioButton
+            android:textColor="#396bc9"
+            android:layout_marginLeft="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NON-AC"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:id="@+id/nacService"/>
+
+    </RadioGroup>
+
+
+</LinearLayout>
